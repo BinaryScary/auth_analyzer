@@ -35,7 +35,7 @@ public class CurrentConfig {
 	}
 	
 	public void performAuthAnalyzerRequest(IHttpRequestResponse messageInfo) {
-		analyzerThreadExecutor.execute(new Runnable() {				
+		analyzerThreadExecutor.execute(new Runnable() {
 			@Override
 			public void run() {
 				BurpExtender.mainPanel.getCenterPanel().updateAmountOfPendingRequests(

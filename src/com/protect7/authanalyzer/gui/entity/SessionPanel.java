@@ -11,15 +11,8 @@ import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URL;
 import java.util.ArrayList;
-import javax.swing.JButton;
-import javax.swing.JCheckBox;
-import javax.swing.JLabel;
-import javax.swing.JMenuItem;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JPopupMenu;
-import javax.swing.JSeparator;
-import javax.swing.UIManager;
+import javax.swing.*;
+
 import com.protect7.authanalyzer.entities.MatchAndReplace;
 import com.protect7.authanalyzer.entities.Token;
 import com.protect7.authanalyzer.gui.dialog.MatchAndReplaceDialog;
@@ -52,6 +45,7 @@ public class SessionPanel extends JPanel {
 	private final ArrayList<TokenPanel> tokenPanels = new ArrayList<TokenPanel>();
 	private ArrayList<MatchAndReplace> matchAndReplaceList = new ArrayList<MatchAndReplace>();
 	private final MainPanel mainPanel;
+	private final PlaceholderTextField targetField;
 
 	public SessionPanel(String sessionName, MainPanel mainPanel) {
 		this.sessionName = sessionName;
@@ -60,7 +54,7 @@ public class SessionPanel extends JPanel {
 		c.gridx = 0;
 		c.anchor = GridBagConstraints.WEST;
 		c.fill = GridBagConstraints.HORIZONTAL;
-		c.gridwidth = 4;
+		c.gridwidth = 5;
 		c.weighty = 1;
 		
 		statusPanel.setVisible(false);
@@ -94,8 +88,14 @@ public class SessionPanel extends JPanel {
 		testCors = new HintCheckBox("Test CORS", false, "HTTP Method will be set to OPTIONS");
 		c.gridx = 3;
 		sessionPanel.add(testCors, c);
-		
-		c.gridwidth = 4;
+
+		// target textfield
+		targetField = new PlaceholderTextField();
+		targetField.setPlaceholder("target");
+		c.gridx = 4;
+		sessionPanel.add(targetField,c);
+
+		c.gridwidth = 5;
 		c.gridx = 0;
 		c.gridy++;
 		headerToRemoveLabel.setVisible(false);
@@ -381,7 +381,15 @@ public class SessionPanel extends JPanel {
 	public void setHeadersToReplaceText(String text) {
 		this.headersToReplaceText.setText(text);
 	}
-	
+
+	public String getTargetToReplaceText() {
+		return targetField.getText();
+	}
+
+	public void setTargetToReplaceText(String text) {
+		this.targetField.setText(text);
+	}
+
 	public String getHeadersToRemoveText() {
 		return headersToRemoveText.getText();
 	}
@@ -450,4 +458,7 @@ public class SessionPanel extends JPanel {
 	public void setSessionName(String sessionName) {
 		this.sessionName = sessionName;
 	}
+
+	public String getTarget() { return targetField.getText(); }
+	public void setTarget(String target) { targetField.setText(target); }
 }

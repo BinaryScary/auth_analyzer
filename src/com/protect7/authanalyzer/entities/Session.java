@@ -30,9 +30,10 @@ public class Session {
 	private ArrayList<Token> tokens = new ArrayList<Token>();
 	private ArrayList<MatchAndReplace> matchAndReplaceList = new ArrayList<MatchAndReplace>();
 	private final StatusPanel statusPanel;
+	private String target = "";
 
 	public Session(String name, String headersToReplace, boolean removeHeaders, String headersToRemove, boolean filterRequestsWithSameHeader, boolean restrictToScope, 
-			URL scopeUrl, boolean testCors, ArrayList<Token> tokens, ArrayList<MatchAndReplace> matchAndReplaceList, StatusPanel statusPanel) {
+			URL scopeUrl, boolean testCors, ArrayList<Token> tokens, ArrayList<MatchAndReplace> matchAndReplaceList, StatusPanel statusPanel, String target) {
 		this.name = name;
 		this.removeHeaders = removeHeaders;
 		this.headersToReplace = headersToReplace;
@@ -44,6 +45,7 @@ public class Session {
 		this.setTokens(tokens);
 		this.matchAndReplaceList = matchAndReplaceList;
 		this.statusPanel = statusPanel;
+		this.target = target;
 	}
 
 	public String getName() {
@@ -53,7 +55,7 @@ public class Session {
 	public String getHeadersToReplace() {
 		return headersToReplace;
 	}
-	
+
 	public void setHeadersToReplace(String headersToReplace) {
 		this.headersToReplace = headersToReplace;
 	}
@@ -193,4 +195,7 @@ public class Session {
 	public void setMatchAndReplaceList(ArrayList<MatchAndReplace> matchAndReplaceList) {
 		this.matchAndReplaceList = matchAndReplaceList;
 	}
+
+	public String getTarget(){ return target; }
+	public void setTarget(String target){ this.target = target; }
 }

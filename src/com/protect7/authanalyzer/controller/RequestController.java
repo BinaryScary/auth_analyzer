@@ -11,6 +11,9 @@ package com.protect7.authanalyzer.controller;
 import java.net.URL;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
+
+import burp.*;
 import com.protect7.authanalyzer.entities.AnalyzerRequestResponse;
 import com.protect7.authanalyzer.entities.OriginalRequestResponse;
 import com.protect7.authanalyzer.entities.Session;
@@ -21,15 +24,13 @@ import com.protect7.authanalyzer.util.CurrentConfig;
 import com.protect7.authanalyzer.util.ExtractionHelper;
 import com.protect7.authanalyzer.util.GenericHelper;
 import com.protect7.authanalyzer.util.RequestModifHelper;
-import burp.BurpExtender;
-import burp.IHttpRequestResponse;
-import burp.IRequestInfo;
-import burp.IResponseInfo;
+
+import javax.swing.*;
 
 public class RequestController {
 
 	public void analyze(IHttpRequestResponse originalRequestResponse) {
-		
+
 		// Fail-Safe - Check if messageInfo can be processed
 		if (originalRequestResponse == null || originalRequestResponse.getRequest() == null) {
 			BurpExtender.callbacks.printError("Cannot analyze request with null values.");
@@ -79,8 +80,16 @@ public class RequestController {
 					byte[] message = BurpExtender.callbacks.getHelpers().buildHttpMessage(modifiedHeaders, modifiedMessageBody);
 
 					// Perform modified request
-					IHttpRequestResponse sessionRequestResponse = BurpExtender.callbacks
-							.makeHttpRequest(originalRequestResponse.getHttpService(), message);
+					IHttpRequestResponse sessionRequestResponse;
+					// modify target host if set
+					if (!session.getTarget().isEmpty()){
+						IHttpService modifiedService = BurpExtender.callbacks.getHelpers().buildHttpService(session.getTarget(),originalRequestResponse.getHttpService().getPort(), originalRequestResponse.getHttpService().getProtocol());
+						sessionRequestResponse = BurpExtender.callbacks
+								.makeHttpRequest(modifiedService, message);
+					}else {
+						sessionRequestResponse = BurpExtender.callbacks
+								.makeHttpRequest(originalRequestResponse.getHttpService(), message);
+					}
 				
 					// Analyze Response of modified Request
 					if (sessionRequestResponse.getRequest() != null && sessionRequestResponse.getResponse() != null) {

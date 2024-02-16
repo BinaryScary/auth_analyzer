@@ -578,7 +578,7 @@ public class ConfigurationPanel extends JPanel {
 			if (sessionListChanged) {
 				newSession = new Session(session, sessionPanel.getHeadersToReplaceText(), sessionPanel.isRemoveHeaders(),
 						sessionPanel.getHeadersToRemoveText(), sessionPanel.isFilterRequestsWithSameHeader(), sessionPanel.isRestrictToScope(),
-						sessionPanel.getScopeUrl(), sessionPanel.isTestCors(), tokenList, sessionPanel.getMatchAndReplaceList(), sessionPanel.getStatusPanel());
+						sessionPanel.getScopeUrl(), sessionPanel.isTestCors(), tokenList, sessionPanel.getMatchAndReplaceList(), sessionPanel.getStatusPanel(), sessionPanel.getTarget());
 				config.addSession(newSession);
 			} else {
 				newSession = config.getSessionByName(session);
@@ -590,6 +590,7 @@ public class ConfigurationPanel extends JPanel {
 				newSession.setScopeUrl(sessionPanel.getScopeUrl());
 				newSession.setTestCors(sessionPanel.isTestCors());
 				newSession.setMatchAndReplaceList(sessionPanel.getMatchAndReplaceList());
+				newSession.setTarget(sessionPanel.getTarget());
 				for (Token newToken : tokenList) {
 					for (Token oldToken : newSession.getTokens()) {
 						if (newToken.getName().equals(oldToken.getName())) {
@@ -637,6 +638,9 @@ public class ConfigurationPanel extends JPanel {
 			}
 			if (sessionObject.get("testCors") != null) {
 				sessionPanel.setTestCors(sessionObject.get("testCors").getAsBoolean());
+			}
+			if (sessionObject.get("target") != null) {
+				sessionPanel.setTarget(sessionObject.get("target").getAsString());
 			}
 			if(sessionObject.get("matchAndReplaceList") != null) {
 				JsonArray matchAndReplaceArray = sessionObject.get("matchAndReplaceList").getAsJsonArray();
